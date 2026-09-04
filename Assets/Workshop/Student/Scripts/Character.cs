@@ -11,12 +11,26 @@ public class Character : Identity
     public int energy;
     public int attackPoint;
     protected bool isFreeze;
+    public GameObject winCanvas;
     
 
     public virtual void Move(Vector2 direction)
     {
         int toX = (int)(positionX + direction.x);
         int toY = (int)(positionY + direction.y);
+
+        if (IsExit(toX, toY))
+        {
+           
+            positionX = toX;
+            positionY = toY;
+            transform.position = new Vector2(positionX, positionY);
+            winCanvas.SetActive(true);
+
+            return;
+        }
+
+
 
         if (HasPlacement(toX, toY))
         {
@@ -34,6 +48,8 @@ public class Character : Identity
 
 
         }
+
+
 
         else
         {
@@ -117,8 +133,8 @@ public class Character : Identity
 
     public bool IsExit(int x, int y)
     {
-        // int mapData = mapGenerator.GetMapData(x, y);
-        // return mapData == mapGenerator.exit;
+        var mapData = mapGenerator.GetMapData(x, y);
+        return mapData == mapGenerator.exit;
         return false;
     }
 
